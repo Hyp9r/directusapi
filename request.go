@@ -65,10 +65,19 @@ func (a *API[R, W, PK]) executeRequest(r request, expectedStatus int, dest any) 
 		fmt.Println("--- Request end ---")
 	}
 
+	reqDump, _ := httputil.DumpRequest(req, true)
+
+	fmt.Println(string(reqDump))
+
 	resp, err := a.HTTPClient.Do(req)
 	if err != nil {
 		return fmt.Errorf("execute request: %v", err)
 	}
+
+	respDump, _ := httputil.DumpResponse(resp, true)
+
+	fmt.Println(string(respDump))
+
 	defer resp.Body.Close()
 
 	if a.debug {
